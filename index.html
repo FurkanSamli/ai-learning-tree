@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI Tree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="src/styles.css">
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js" } }
+</script>
+<style>[hidden]{display:none!important}</style>
+</head>
+<body>
+<div id="app">
+  <div id="stage"><div id="scene"></div><div id="labels"></div></div>
+
+  <header class="top">
+    <div class="brand"><h1 data-t="brand">AI Tree</h1><div class="prog" id="topProg"></div></div>
+    <div class="search">
+      <label class="box" for="search">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input id="search" type="search" autocomplete="off" spellcheck="false" data-t-ph="search" aria-controls="sres">
+        <kbd>/</kbd>
+      </label>
+      <ul class="sres" id="sres" role="listbox" hidden></ul>
+    </div>
+    <div class="top-r">
+      <button class="tb" id="homeBtn" type="button" data-t="home">Tree</button>
+      <button class="tb" id="bkBtn" type="button" data-t="backup">Backup</button>
+      <button class="tb" id="panelBtn" type="button" aria-pressed="true" data-t="panel">Panel</button>
+    </div>
+  </header>
+
+  <aside class="panel" id="panel" aria-label="Details panel"><div class="panel-scroll" id="panelScroll"><div id="panelBody"></div></div></aside>
+
+  <div class="legend" id="legend"></div>
+  <div class="hints" id="hints" data-t="hints"></div>
+  <div class="tip" id="tip" hidden></div>
+  <div class="nogl" id="nogl" hidden></div>
+  <div class="nogl" id="loadErr" hidden></div>
+
+  <div class="overlay" id="intro" hidden>
+    <div class="card" role="dialog" aria-modal="true" aria-labelledby="introT">
+      <h2 id="introT" data-t="introT"></h2>
+      <ul>
+        <li><b>01</b><span data-t="intro1"></span></li>
+        <li><b>02</b><span data-t="intro2"></span></li>
+        <li><b>03</b><span data-t="intro3"></span></li>
+        <li><b>04</b><span data-t="intro4"></span></li>
+      </ul>
+      <div class="row"><button class="btn solid" id="introGo" type="button" data-t="introBtn"></button></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="modal" hidden>
+    <div class="card" role="dialog" aria-modal="true" aria-labelledby="bkT">
+      <div class="row"><h2 id="bkT" data-t="bkTitle"></h2><button class="btn x" id="bkClose" type="button" data-t="close"></button></div>
+      <p class="tipline" data-t="bkIntro"></p>
+      <h3 data-t="bkExport"></h3>
+      <textarea id="bkOut" readonly aria-label="JSON"></textarea>
+      <div class="row"><button class="btn solid" id="bkCopy" type="button" data-t="copy"></button><span class="msg" id="bkCopyMsg"></span></div>
+      <hr>
+      <h3 data-t="bkImport"></h3>
+      <textarea id="bkIn" data-t-ph="bkImportPh" aria-label="JSON"></textarea>
+      <div class="row">
+        <button class="btn solid" id="bkLoad" type="button" data-t="load"></button>
+        <label class="filelbl"><input type="file" id="bkFile" accept=".json,.txt,application/json"><span data-t="fromFile"></span></label>
+        <span class="msg" id="bkLoadMsg"></span>
+      </div>
+      <hr>
+      <h3 data-t="bkReset"></h3>
+      <div class="row" id="bkResetRow"></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

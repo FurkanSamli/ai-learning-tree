@@ -1,0 +1,11 @@
+{
+  "name": "ai-learning-tree",
+  "version": "0.2.0",
+  "private": true,
+  "description": "A personal AI learning map: every AI topic as a 3D tree, with progress tracking and notes.",
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes serve -l 5173 .",
+    "check": "node scripts/check-content.mjs"
+  }
+}
