@@ -9,8 +9,9 @@ docs, commit messages) is **English only**.
 
 - No build step: plain HTML + ES modules. Three.js is loaded from jsDelivr through the
   importmap in `index.html` (pinned to 0.128.0).
-- Needs a local server (`fetch` and modules do not work over `file://`):
-  `npm run dev` (http://localhost:5173) or `python3 -m http.server 5173`.
+- `npm run dev` runs `server.mjs` (http://localhost:5173): a dependency-free Node server that
+  serves the site and saves progress to `data/progress.db` (built-in `node:sqlite`, JSON-file
+  fallback on older Node). `python3 -m http.server 5173` still works, with localStorage only.
 - Content check: `npm run check`. Run it after every change to the content files.
 - No automated tests yet; after a change, open the page and check by hand: tree → branch →
   topic, marking, notes, search.
@@ -18,10 +19,11 @@ docs, commit messages) is **English only**.
 ## Structure
 
 ```
-index.html              Page skeleton, importmap, static markup (panel, modal, intro card)
+server.mjs              Local server: static files + GET/PUT /api/state, SQLite in data/ (never served, never committed)
+index.html              Page skeleton, importmap, static markup (panel, data dialog, intro card)
 src/main.js             Entry: loads content, builds the model, starts scene and UI, frame loop, select()/goUp()
 src/state.js            Shared state (sel, focusBranch, hover, panelOpen, GL) and `actions` (avoids import cycles)
-src/store.js            localStorage: progress (st), notes (nt), backup export/import
+src/store.js            Progress (st), notes (nt): initStore() loads from the server or localStorage, save() syncs; export/import
 src/strings.js          UI strings; t(), tx()
 src/util.js             DOM helpers, search fold(), color and vector math
 src/layout.js           3D positions and branch curves: trunk, roots (ROOTS), main branches (LIMBS), topic twigs
@@ -51,6 +53,10 @@ scripts/check-content.mjs  Content checker
   are on the ROADMAP.
 - When adding a branch, also add it to `ROOTS` or `LIMBS` in `src/data/groups.js` and add the
   file to `content/index.json`.
+- Saving: always call `save()` after changing `store`; it writes localStorage and (with the server)
+  sends the whole state with a short debounce. Unconfirmed changes are marked `_pending` and
+  re-sent on the next start. `data/` must stay in `.gitignore`.
+- Database changes: add a migration in `server.mjs` and bump `PRAGMA user_version`.
 - The `localStorage` key is `ai-tree-v1`. If you change the stored format, bump the version
   and read/migrate the old one.
 - To keep modules from importing each other in a cycle, actions such as select/hover go

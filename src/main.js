@@ -2,7 +2,7 @@
 
 import { D, el, reduceMotion } from './util.js';
 import { state, actions } from './state.js';
-import { store, save } from './store.js';
+import { store, save, initStore, onSync } from './store.js';
 import { t } from './strings.js';
 import { GROUPS } from './data/groups.js';
 import { buildModel, model } from './data/model.js';
@@ -67,12 +67,24 @@ function applyText() {
   lg.appendChild(stl);
 }
 
+/* ---------- Save status badge ---------- */
+function initSyncBadge() {
+  const b = D.getElementById('sync');
+  onSync((s) => {
+    const k = s.mode === 'browser' ? 'browser' : s.error ? 'error' : s.saving ? 'saving' : 'db';
+    b.dataset.state = k;
+    b.textContent = t('sync_' + k);
+    b.title = t('syncTip_' + k, { file: s.file });
+  });
+}
+
 /* ---------- Start ---------- */
 async function start() {
   applyText();
 
   try {
-    buildModel(await loadContent());
+    const [src] = await Promise.all([loadContent(), initStore()]);
+    buildModel(src);
   } catch (err) {
     console.error(err);
     const le = D.getElementById('loadErr');
@@ -101,6 +113,7 @@ async function start() {
   initControls();
   initSearch();
   initBackup();
+  initSyncBadge();
   D.getElementById('homeBtn').addEventListener('click', () => select(null));
   D.getElementById('panelBtn').addEventListener('click', () => togglePanel());
 

@@ -74,11 +74,10 @@ The quoted prompts can be pasted into Claude Code as they are.
 
 ## Phase 5 — Persistent data and deployment (also MLOps practice)
 
-17. **Auto-save to a file**
-    > Add an option to auto-save progress to a JSON file on my computer with the File System Access API (in browsers that support it).
+17. ~~**A small backend**~~ — done: `server.mjs` serves the site and saves progress to `data/progress.db` (SQLite).
 
-18. **A small backend**
-    > Write a simple FastAPI + SQLite API that stores progress and notes; let the front end optionally use it instead of localStorage.
+18. **Learning log chart**
+    > Use the `status_log` table in data/progress.db to show a weekly progress chart in the panel (add a small read-only API endpoint for it).
 
 19. **Docker**
     > Write Dockerfiles for the front end and the API and a docker-compose.yml so that `docker compose up` starts everything. Explain every step, I want to learn.
