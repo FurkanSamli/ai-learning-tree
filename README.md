@@ -1,5 +1,7 @@
 # AI Learning Tree
 
+![AI Learning Tree: the 3D tree overview with the panel on the right](docs/screenshot.webp)
+
 A personal learning map that shows 18 fields and 573 topics of artificial intelligence as an
 interactive 3D tree. The trunk is AI itself; the foundations (math, programming, data) are
 the roots below the ground, the other fields are branches growing from the trunk, and the
